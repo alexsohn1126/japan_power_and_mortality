@@ -1,7 +1,7 @@
 #### Preamble ####
 # Purpose: Replicates Graphs With Data From the Original Paper
 # Author: Moohaeng Sohn
-# Date: February 12th, 2024
+# Date: February 13th, 2024
 # Contact: alex.sohn@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: Have the required data downloaded in the inputs/data folder
@@ -238,36 +238,31 @@ merged_table <- left_join(
 
 # Make graph
 merged_table |>
-  ggplot(x = st, y = change) +
+  ggplot(aes(x = st, y = change)) +
+  theme_classic() +
+  labs(
+    x = "Electricity Saving Target",
+    y = "Electricity Consumption Change (%) Compared to 2010",
+    title = "Electricity Consumption Change After 2010 vs. Electricity Saving Target"
+  ) +
   geom_point(
-    aes()
+    aes(
+      x = st, 
+      y = change,
+      color = season,
+      shape = season
+    ),
+    size = 4
+  ) +
+  geom_smooth(
+    aes(
+      group = season,
+      color = season
+    ), 
+    method = "lm",
+    se = FALSE,
+    linetype = "dashed"
+  ) +
+  geom_hline(
+    yintercept = 0
   )
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
