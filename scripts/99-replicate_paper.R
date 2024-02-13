@@ -42,6 +42,7 @@ nuclear_graph_data|>
   labs(
     x= "Year",
     y = "Nuclear Power Utilization",
+    title = "Nuclear Power Plant Utilization Before and After the Fukushima Disaster",
     color = "Before or After the Fukushima Incident",
     shape = "Before or After the Fukushima Incident"
   ) + 
@@ -138,7 +139,7 @@ final_ec_graph_data |>
   scale_x_continuous(breaks = seq(2004, 2015, by=1)) +
   scale_linetype_manual(values=c("twodash", "dotted", "twodash", "dotted", "twodash", "dotted"),
                         labels=c('Summer Cost', 'Summer Usage', 'Year Cost', 'Year Usage', 'Winter Cost', 'Winter Usage')) +
-  scale_shape_manual(values=c(17, 16, 15, 18, 16, 17),
+  scale_shape_manual(values=c(17, 16, 15, 18, 17, 16),
                      labels=c('Summer Cost', 'Summer Usage', 'Year Cost', 'Year Usage', 'Winter Cost', 'Winter Usage')) +
   scale_color_manual(
     values=c('red','red', 'darkgray', 'darkgray','blue','blue'),
@@ -163,6 +164,7 @@ final_ec_graph_data |>
   labs(
     x = "Year",
     y = "Ratio of cost/usage compared to 2010",
+    title = "Ratio of Cost and Usage for Each season/year Compared to 2010",
     color = "Ratios",
     shape = "Ratios",
     linetype = "Ratios"
