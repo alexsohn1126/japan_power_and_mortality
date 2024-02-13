@@ -243,7 +243,9 @@ merged_table |>
   labs(
     x = "Electricity Saving Target",
     y = "Electricity Consumption Change (%) Compared to 2010",
-    title = "Electricity Consumption Change After 2010 vs. Electricity Saving Target"
+    color = "Season",
+    shape = "Season",
+    title = "Electricity Consumption Change After 2010 vs. Electricity Saving Target",
   ) +
   geom_point(
     aes(
