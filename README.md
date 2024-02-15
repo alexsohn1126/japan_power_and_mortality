@@ -11,7 +11,8 @@ A minimum SSRP replication of 3 graphs that were in the original paper was done 
 
 The repo is structured as:
 
-- `input/data` contains the data sources used in analysis including the raw data.
+- `inputs/data` contains the data sources used in analysis including the raw data.
+- `inputs/llm` contains `usage.txt`, a text file containing the llm usage.
 - `outputs/data` contains the cleaned dataset that was constructed.
 - `outputs/paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper.
 - `outputs/replication` contains the replicated graphs from the original paper.
@@ -46,4 +47,4 @@ To download a file:
 6. Add those files into inputs/data
 
 ## LLM
-No LLM was used in the writing of this paper.
+LLM, ChatGPT-3.5, was used to assist in the process of writing this paper. Check `inputs/llm` for conversation details.
