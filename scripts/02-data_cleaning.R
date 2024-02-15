@@ -1,44 +1,44 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 6 April 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Cleans the Japanese 
+# Author: Moohaeng Sohn
+# Date: 14 February, 2024
+# Contact: alex.sohn@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: Download packages and data used (instructions on data download is in the readme)
 
 #### Workspace setup ####
 library(tidyverse)
+library(haven)
+
+#### Load data ####
+pref_year <- read_dta("inputs/data/py_merged.dta")
+regions <- read_dta("inputs/data/region_merged.dta")
+working <- read_dta("inputs/data/working_data.dta")
 
 #### Clean data ####
-raw_data <- read_csv("inputs/data/plane_data.csv")
+# Pick out only the relevant columns and rows with actual data
+# There is only gdp data for 2008-2015
+pref_year <- pref_year |>
+  select(year, pref_id, area_id, pref_name, pop0_19, pop20_64, pop65, gdp) |>
+  filter(year >= 2008 & year <= 2015)
+# Only take the summer months as that's the main focus of this study
+regions <- regions |>
+  filter(month %in% c(7,8,9)) |>
+  select(year, month, area_id, power_usage = total) |>
+  filter(year >= 2008 & year <= 2015)
+# Also only take summer months
+working <- working |>
+  filter(month %in% c(7,8,9)) |>
+  select(year, month, area_id, saving_rates = saving_rs, stroker, temp) |>
+  filter(year >= 2008 & year <= 2015)
 
-cleaned_data <-
-  raw_data |>
-  janitor::clean_names() |>
-  select(wing_width_mm, wing_length_mm, flying_time_sec_first_timer) |>
-  filter(wing_width_mm != "caw") |>
+# Create new columns relevant to us
+# GDP per capita for each prefecture
+pref_year <- pref_year |>
   mutate(
-    flying_time_sec_first_timer = if_else(flying_time_sec_first_timer == "1,35",
-                                   "1.35",
-                                   flying_time_sec_first_timer)
-  ) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "490",
-                                 "49",
-                                 wing_width_mm)) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "6",
-                                 "60",
-                                 wing_width_mm)) |>
-  mutate(
-    wing_width_mm = as.numeric(wing_width_mm),
-    wing_length_mm = as.numeric(wing_length_mm),
-    flying_time_sec_first_timer = as.numeric(flying_time_sec_first_timer)
-  ) |>
-  rename(flying_time = flying_time_sec_first_timer,
-         width = wing_width_mm,
-         length = wing_length_mm
-         ) |> 
-  tidyr::drop_na()
+    gdp_capita = gdp / (pop0_19 + pop20_64 + pop65)
+  )
+# 
 
 #### Save data ####
 write_csv(cleaned_data, "outputs/data/analysis_data.csv")

@@ -2,7 +2,7 @@
 title: "Japan's regional GDP and Heat Stroke Rate"
 author: 
   - Moohaeng Sohn
-thanks: "Code and data are available at: [https://github.com/alexsohn1126/japan_power_and_mortality](https://github.com/alexsohn1126/japan_power_and_mortality)"
+thanks: "Code and data are available at: [https://github.com/alexsohn1126/japan_power_and_mortality](https://github.com/alexsohn1126/japan_power_and_mortality). Replication aspects in this paper is available at: [https://doi.org/10.48152/ssrp-zk6r-9k16](https://doi.org/10.48152/ssrp-zk6r-9k16)"
 date: today
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
@@ -22,11 +22,17 @@ library(tidyverse)
 
 # Introduction
 
-@citeR
+Japan is a country located near the edge of eurasia tectonic plates. Numerous earthquakes affect Japan each year. 2011 Tōhoku earthquake was one of the most devastating earthquakes to occur in recorded history. The earthquake was measured at the magnitude X and took over Y number of people's lives [TODO: ADD CITATION HERE]. Not only that, the earthquake was followed by a tsunami, being over Z meters tall and swept over ABC region [TODO: Add actual data here]. The nuclear power plant that was located near the shores of Fukushima prefacture was damaged by the earthquake, followed by the tsunami. The radioactive fuel rods melted and radiation was spread over a wide region near the shores. The International Nuclear Event Scale (INES) intends to measure the seriousness of nuclear accidents. Fukushima nuclear disaster was given INES level 7. Only other nuclear disaster that was given a INES level 7 was the Chernobyl disaster[TODO:ADD CITATION HERE].
+
+Fukushima nuclear disaster instilled fear for nuclear power on the Japanese citizens. The Japanese power companies started shutting down nuclear power plants around the country. This decreased the number of available power throughout the country. A campaign to encourage electricity saving ran over Japan. The campaign was a success, decreasing electricity consumption by X amount [TODO: ADD CITATION]. However Japan has very hot and humid summers which cause heat strokes especially in elderly populations. Limiting electricity usage by keeping the ACs off could cause higher rate of heat strokes in vulnerable populations.
+
+Guojun He and Takanao Tanaka published a study which observed the effects of these energy savings and mortality rates due to heat strokes [TODO: ADD CITATION HERE]. They have found there were higher number of ambulance calls caused by heat strokes. Also, Higher mortality rates in extreme heat (>30$^\circ$C) was observed after the shutdown of nuclear reactors.
+
+In this paper, I use the same dataset that was given by Goujun and Takanao to focus on the different age groups of japan, and how they were affected by the change of variables related to electricity affordability. 
 
 # Data {#sec-data}
 
-
+@citeR
 
 Talk way more about it. 
 
