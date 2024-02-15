@@ -34,6 +34,10 @@
 # 5. The file should start downloading
 # 6. Add those files into inputs/data
 
+# You may need to perform this step if you have an incompatible version with rnaturalearth
+# install.packages("devtools")
+# devtools::install_github("ropensci/rnaturalearthhires")
+
 #### Load packages ####
 library(rnaturalearth)
 library(sf)

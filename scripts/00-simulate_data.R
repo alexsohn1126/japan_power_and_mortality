@@ -25,10 +25,11 @@ curr_data <- tibble(
   # 3 months for summer: July, Aug, Sep
   month = rep(7:9, 3 * num_years * num_area),
   area_id = rep(1:num_area, each = 3 * 3 * num_years),
-  age_group = rep(c("<19", "19-65", ">65"), each = 3, times = num_years * num_area),
+  age_group = rep(c("0_19", "20_64", "65"), each = 3, times = num_years * num_area),
   saving_rate = rbeta(3 * 3 * num_years * num_area, shape1 = 2, shape2 = 5),
   heat_stroke_rate = 100 * rbeta(3 * 3 * num_years * num_area, shape1 = 2, shape2 = 5),
   elec_price = 20 * rbeta(3 * 3 * num_years * num_area, shape1 = 2, shape2 = 5),
+  gdp_capita = 1000 + 100 * rbeta(3 * 3 * num_years * num_area, shape1 = 2, shape2 = 5),
 )
 
 
@@ -46,7 +47,7 @@ all((curr_data$area_id |> min()) >= 1)
 all((curr_data$area_id |> max()) <= 10)
 
 curr_data$age_group |> is.character()
-all(curr_data$age_group %in% c("<19", "19-65", ">65"))
+all(curr_data$age_group %in% c("0_19", "20_64", "65"))
 
 curr_data$saving_rate |> is.numeric()
 all((curr_data$saving_rate |> min()) >= 0)
@@ -59,6 +60,9 @@ all((curr_data$heat_stroke_rate |> max()) <= 100000)
 
 curr_data$elec_price |> is.numeric()
 all((curr_data$elec_price |> min()) >= 0)
+
+curr_data$gdp_capita |> is.numeric()
+all((curr_data$gdp_capita |> min()) >= 0) 
 
 
 
