@@ -16,7 +16,7 @@ The repo is structured as:
 - `outputs/data` contains the cleaned dataset that was constructed.
 - `outputs/paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper.
 - `outputs/replication` contains the replicated graphs from the original paper.
-- `scripts` contains the R scripts used to simulate, download and clean data.
+- `scripts` contains the R scripts used to simulate, download, replicate and clean data.
 
 ## Downloading replication data
 I used the dataset from the paper: ["Energy Saving May Kill: Evidence from the Fukushima Nuclear Accident"](https://doi.org/10.1257/app.20200505) by Guojun He and Takanao Tanaka.
