@@ -9,6 +9,7 @@ abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
 format: pdf
 number-sections: true
 bibliography: references.bib
+toc: true
 ---
 
 ```{r}
@@ -17,6 +18,12 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
+library(sf)
+library(here)
+
+#### Load data ####
+japan_map <- st_read(here("outputs/data/japan_prefectures.shp"))
+cleaned_data <- read_csv(here("outputs/data/cleaned_data.csv"))
 ```
 
 
@@ -26,13 +33,20 @@ Japan is a country located near the edge of eurasia tectonic plates. Numerous ea
 
 Fukushima nuclear disaster instilled fear for nuclear power on the Japanese citizens. The Japanese power companies started shutting down nuclear power plants around the country. This decreased the number of available power throughout the country. A campaign to encourage electricity saving ran over Japan. The campaign was a success, decreasing electricity consumption by X amount [TODO: ADD CITATION]. However Japan has very hot and humid summers which cause heat strokes especially in elderly populations. Limiting electricity usage by keeping the ACs off could cause higher rate of heat strokes in vulnerable populations.
 
-Guojun He and Takanao Tanaka published a study which observed the effects of these energy savings and mortality rates due to heat strokes [TODO: ADD CITATION HERE]. They have found there were higher number of ambulance calls caused by heat strokes. Also, Higher mortality rates in extreme heat (>30$^\circ$C) was observed after the shutdown of nuclear reactors.
+Guojun He and Takanao Tanaka published a study which observed the effects of these energy savings and mortality rates due to heat strokes [TODO: ADD CITATION HERE]. They have found there were higher number of ambulance calls caused by heat strokes after the shutdown of nuclear power plants. Also, Higher mortality rates in extreme heat (>30$^\circ$C) was observed after the shutdown. They have dove in depth on how the shift in power generation demographic have possibly affected mortality rates from heat strokes, but the effect which the cost and the affordability of electricity had was not discussed in detail.
 
-In this paper, I use the same dataset that was given by Goujun and Takanao to focus on the different age groups of japan, and how they were affected by the change of variables related to electricity affordability. 
+In this paper, I have used the same dataset that was given by Goujun and Takanao to focus on the different age groups of japan, and how they were affected by the change of variables related to electricity affordability. My estimand of interest is to which degree those variables affect the number of heat stroke cases across different age groups in Japan. In this paper, I will first introduce our dataset, going into detail how they were collected by the original authors, and what I have done to clean them if any. Then, I will discuss about the results we have gotten from the data. Lastly, I will discuss what we have found, and their possible implications. I will be reflecting upon our process and discussing potential future researches.
 
-# Data {#sec-data}
+# Data
+## Sources
+The original paper by Goujun and Takanao combines datasets from multiple sources. We will go through where each variable was sourced from.
 
-@citeR
+The electricity saving target dataset from 2008 to 2015 was collected from Japan's Electricity Supply-Demand Verification Subcommittee for every summer season [CITE ORIGINAL PAPER]. The paper defined the summer season as July, August, and September. We will also use the same definition of summer in our paper. 
+
+Our dataset is organized by "areas". Areas are a collection of prefectures (states) in Japan which have the same power companies. There are 10 major power companies within Japan, therefore we divide Japan into 10 areas. This is fine because each power company essentially holds a monopoly over their region [CITE ORIGINAL PAPER]. Heat stroke data from 2008 to 2015 was collected by observing the number of ambulance transports caused by a heat stroke. The heat stroke data was then converted into the heat stroke rate per 100,000 people. This data was gathered from the Fire and Disaster Management Agency in Japan [CITE ORIGINAL PAPER]. This data is collected in a monthly basis. The prefectural temperature data was collected by consulting Meteorological Agency of Japan [CITE ORIGINAL PAPER]. This was done by aggregating station level data. Original authors weighed each station data with the inverse square of the distance to the population center of a prefecture. This meant that weather stations closer to the prefecture's population center would be factored in more than the stations further away. 
+
+## Methodology
+To combine many datasets into one, we have used Open Source Statistical Programming Language R [@citeR].
 
 Talk way more about it. 
 
