@@ -18,7 +18,7 @@ The repo is structured as:
 - `scripts` contains the R scripts used to simulate, download and clean data.
 
 ## Downloading replication data
-We use the dataset from the paper: ["Energy Saving May Kill: Evidence from the Fukushima Nuclear Accident"](https://doi.org/10.1257/app.20200505) by Guojun He and Takanao Tanaka.
+I used the dataset from the paper: ["Energy Saving May Kill: Evidence from the Fukushima Nuclear Accident"](https://doi.org/10.1257/app.20200505) by Guojun He and Takanao Tanaka.
 
 The replication package is downloadable in the openICPSR website which requires an account to download.
 
