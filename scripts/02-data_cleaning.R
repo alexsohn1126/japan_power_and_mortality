@@ -55,21 +55,10 @@ working <- working |>
     stroker = pmax(stroker, 0)
   )
 
-# Create GDP per capita for each prefecture for each year
-pref_year <- pref_year |>
-  mutate(
-    gdp_capita = gdp / (pop0_19 + pop20_64 + pop65)
-  )
-# Create power usage per capita for each year/month and area
-regions <- regions |>
-  mutate(
-    power_usage_capita = power_usage / (pop0_19 + pop20_64 + pop65)
-  )
-
 # minimize the tables before joining
 regions <- regions |>
   select(
-    year, month, area_id, power_usage_capita, ptotal
+    year, month, area_id, ptotal
   )
 
 # Take avg gdp for areas

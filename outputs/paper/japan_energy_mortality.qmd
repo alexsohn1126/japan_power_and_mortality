@@ -1,5 +1,5 @@
 ---
-title: "Japan's regional GDP and Heat Stroke Rate"
+title: "Japan's regional GDP and heatstroke Rate"
 author: 
   - Moohaeng Sohn
 thanks: "Code and data are available at: [https://github.com/alexsohn1126/japan_power_and_mortality](https://github.com/alexsohn1126/japan_power_and_mortality). Replication aspects in this paper is available at: [https://doi.org/10.48152/ssrp-zk6r-9k16](https://doi.org/10.48152/ssrp-zk6r-9k16)"
@@ -18,12 +18,116 @@ toc: true
 #| message: false
 
 library(tidyverse)
+library(patchwork)
+library(kableExtra)
 library(sf)
 library(here)
 
 #### Load data ####
 japan_map <- st_read(here("outputs/data/japan_prefectures.shp"))
 cleaned_data <- read_csv(here("outputs/data/cleaned_data.csv"))
+
+#### Set up prefecture to Area tibble ####
+pref_to_area <- tibble(
+  woe_label = c(
+    "aichi",
+    "akita",
+    "aomori",
+    "chiba",
+    "ehime",
+    "fukui",
+    "fukuoka",
+    "fukushima",
+    "gifu",
+    "gunma",
+    "hiroshima",
+    "hokkaido",
+    "hyogo",
+    "ibaraki",
+    "ishikawa",
+    "iwate",
+    "kagawa",
+    "kagoshima",
+    "kanagawa",
+    "kouchi",
+    "kumamoto",
+    "kyoto",
+    "mie",
+    "miyagi",
+    "miyazaki",
+    "nagano",
+    "nagasaki",
+    "nara",
+    "niigata",
+    "oita",
+    "okayama",
+    "okinawa",
+    "osaka",
+    "saga",
+    "saitama",
+    "shiga",
+    "shimane",
+    "shizuoka",
+    "tochigi",
+    "tokushima",
+    "tokyo",
+    "tottori",
+    "toyama",
+    "wakayama",
+    "yamagata",
+    "yamaguchi",
+    "yamanashi"
+  ),
+  areas = c(
+    5,
+    2,
+    2,
+    3,
+    8,
+    4,
+    9,
+    2,
+    5,
+    3,
+    7,
+    1,
+    6,
+    3,
+    4,
+    2,
+    8,
+    9,
+    3,
+    8,
+    9,
+    6,
+    5,
+    2,
+    9,
+    5,
+    9,
+    6,
+    2,
+    9,
+    7,
+    10,
+    6,
+    9,
+    3,
+    6,
+    7,
+    5,
+    3,
+    8,
+    3,
+    7,
+    4,
+    6,
+    2,
+    7,
+    3
+  )
+)
 ```
 
 
@@ -31,11 +135,11 @@ cleaned_data <- read_csv(here("outputs/data/cleaned_data.csv"))
 
 Japan is a country located near the edge of eurasia tectonic plates. Numerous earthquakes affect Japan each year. 2011 Tōhoku earthquake was one of the most devastating earthquakes to occur in recorded history. The earthquake was measured at the magnitude X and took over Y number of people's lives [TODO: ADD CITATION HERE]. Not only that, the earthquake was followed by a tsunami, being over Z meters tall and swept over ABC region [TODO: Add actual data here]. The nuclear power plant that was located near the shores of Fukushima prefacture was damaged by the earthquake, followed by the tsunami. The radioactive fuel rods melted and radiation was spread over a wide region near the shores. The International Nuclear Event Scale (INES) intends to measure the seriousness of nuclear accidents. Fukushima nuclear disaster was given INES level 7. Only other nuclear disaster that was given a INES level 7 was the Chernobyl disaster[TODO:ADD CITATION HERE].
 
-Fukushima nuclear disaster instilled fear for nuclear power on the Japanese citizens. The Japanese power companies started shutting down nuclear power plants around the country. This decreased the number of available power throughout the country. A campaign to encourage electricity saving ran over Japan. The campaign was a success, decreasing electricity consumption by X amount [TODO: ADD CITATION]. However Japan has very hot and humid summers which cause heat strokes especially in elderly populations. Limiting electricity usage by keeping the ACs off could cause higher rate of heat strokes in vulnerable populations.
+Fukushima nuclear disaster instilled fear for nuclear power on the Japanese citizens. The Japanese power companies started shutting down nuclear power plants around the country. This decreased the number of available power throughout the country. A campaign to encourage electricity saving ran over Japan. The campaign was a success, decreasing electricity consumption by X amount [TODO: ADD CITATION]. However Japan has very hot and humid summers which cause heatstrokes especially in elderly populations. Limiting electricity usage by keeping the ACs off could cause higher rate of heatstrokes in vulnerable populations.
 
-Guojun He and Takanao Tanaka published a study which observed the effects of these energy savings and mortality rates due to heat strokes [TODO: ADD CITATION HERE]. They have found there were higher number of ambulance calls caused by heat strokes after the shutdown of nuclear power plants. Also, Higher mortality rates in extreme heat (>30$^\circ$C) was observed after the shutdown. They have dove in depth on how the shift in power generation demographic have possibly affected mortality rates from heat strokes, but the effect which the cost and the affordability of electricity had was not discussed in detail.
+Guojun He and Takanao Tanaka published a study which observed the effects of these energy savings and mortality rates due to heatstrokes [TODO: ADD CITATION HERE]. They have found there were higher number of ambulance calls caused by heatstrokes after the shutdown of nuclear power plants. Also, Higher mortality rates in extreme heat (>30$^\circ$C) was observed after the shutdown. They have dove in depth on how the shift in power generation demographic have possibly affected mortality rates from heatstrokes, but the effect which the cost and the affordability of electricity had was not discussed in detail.
 
-In this paper, I have used the same dataset that was given by Goujun and Takanao to focus on the different age groups of japan, and how they were affected by the change of variables related to electricity affordability. My estimand of interest is to which degree those variables affect the number of heat stroke cases across different age groups in Japan. In this paper, I will first introduce our dataset, going into detail how they were collected by the original authors, and what I have done to clean them if any. Then, I will discuss about the results we have gotten from the data. Lastly, I will discuss what we have found, and their possible implications. I will be reflecting upon our process and discussing potential future researches.
+In this paper, I have used the same dataset that was given by Goujun and Takanao to focus on the different age groups of japan, and how they were affected by the change of variables related to electricity affordability. My estimand of interest is to which degree those variables affect the number of heatstroke cases across different age groups in Japan. In this paper, I will first introduce our dataset, going into detail how they were collected by the original authors, and what I have done to clean them if any. Then, I will discuss about the results we have gotten from the data. Lastly, I will discuss what we have found, and their possible implications. I will be reflecting upon our process and discussing potential future researches.
 
 # Data
 ## Sources
@@ -43,14 +147,275 @@ The original paper by Goujun and Takanao combines datasets from multiple sources
 
 The electricity saving target dataset from 2008 to 2015 was collected from Japan's Electricity Supply-Demand Verification Subcommittee for every summer season [CITE ORIGINAL PAPER]. The paper defined the summer season as July, August, and September. We will also use the same definition of summer in our paper. 
 
-Our dataset is organized by "areas". Areas are a collection of prefectures (states) in Japan which have the same power companies. There are 10 major power companies within Japan, therefore we divide Japan into 10 areas. This is fine because each power company essentially holds a monopoly over their region [CITE ORIGINAL PAPER]. Heat stroke data from 2008 to 2015 was collected by observing the number of ambulance transports caused by a heat stroke. The heat stroke data was then converted into the heat stroke rate per 100,000 people. This data was gathered from the Fire and Disaster Management Agency in Japan [CITE ORIGINAL PAPER]. This data is collected in a monthly basis. The prefectural temperature data was collected by consulting Meteorological Agency of Japan [CITE ORIGINAL PAPER]. This was done by aggregating station level data. Original authors weighed each station data with the inverse square of the distance to the population center of a prefecture. This meant that weather stations closer to the prefecture's population center would be factored in more than the stations further away. 
+Our dataset is organized by "areas". Areas are a collection of prefectures (states) in Japan which have the same power companies. There are 10 major power companies within Japan, therefore we divide Japan into 10 areas. This is fine because each power company essentially holds a monopoly over their region [CITE ORIGINAL PAPER]. heatstroke data from 2008 to 2015 was collected by observing the number of ambulance transports caused by a heatstroke. The heatstroke data was then converted into the heatstroke rate per 100,000 people. This data was gathered from the Fire and Disaster Management Agency in Japan [CITE ORIGINAL PAPER]. This data is collected in a monthly basis. The prefectural temperature data was collected by consulting Meteorological Agency of Japan [CITE ORIGINAL PAPER]. This was done by aggregating station level data. Original authors weighed each station data with the inverse square of the distance to the population center of a prefecture. This meant that weather stations closer to the prefecture's population center would be factored in more than the stations further away.
 
-## Methodology
-To combine many datasets into one, we have used Open Source Statistical Programming Language R [@citeR].
+GDP per capita for each area was computed by taking the sum of GDP from all the prefectures in each area, and dividing it by the number of people in the area. Number of people in the area was computed by adding up the number of people in the prefectures within the area.
 
-Talk way more about it. 
+We downloaded Japan's map divided into prefectures to help us visualize data better. This was done by using the R package `rnaturalearth`. This R package downloads data from a website called Natural Earth [@Natural_Earth]. This website hosts public domain map data, made by volunteers around the world.
+
+We chose this dataset because it is well documented by the original paper authors. It also combines data from numerous sources, making it easier for us to clean up and combine the data into one table. As of our knowledge, there isn't a dataset which has electricity and heatstroke rate of Japan in the same dataset.
+
+## Methodology {#sec-methodology}
+To combine many datasets into one, we have used Open Source Statistical Programming Language R [@citeR]. Along with it, we have used various R packages to assist us in downloading and processing the data, and generating graphs. These packages are: `tidyverse` [@tidyverse], `rnaturalearth` [@rnaturalearth], `sf` [@sf], `here` [@here], `patchwork` [@patchwork], and `haven` [@haven].
+
+The original paper's authors have used the Stata statistical software. Meaning the data files were given in a `.dta` file format. Using `haven` R package, we were able to load it into R and work with the dataset.
+
+## Variables Summary
+@Fig-key-variables-plots shows our 5 main variables of concern: electricity price, heatstroke rate, electricity saving target, average temperature, and GDP per capita (for each area). Electricity price tends to have higher prices after 2011. It's lowest price was achieved in 2010, and highest was achieved in 2014. heatstroke rate doesn't show a very strong trend but it does seem like 2010 had the highest heatstroke rate, and lowest in 2009. Electricity saving target did not really take off before the Fukushima disaster. We observe that the maximum was achieve in 2011, with minimums being 0 across all years before 2011. There doesn't seem to be a clear trend in average temperature over the years. GDP per capita for each power company does seem to have somewhat of a dip then a recover by the year 2015.
+
+@Tbl-key-var-summary summarizes these key variables. One notable thing is that the standard deviation for GDP per Capita is 200, which indicates most of the data is centered relatively close around the mean, or the average. Standard deviation measures how spread out the data is. Higher standard deviation means data points are spread far apart. Another notable thing is that the maximum heatstroke rate is 71 while mean is 12 and standard deviation is 12.27.
+
+There are total 3384 data points in the dataset. Each row of the dataset can be identified by the year, month, area, and the age group. This means that variable such as GDP stays constant for the same year in the same area.
+
+## Measurements
+The mean temperature data is measured in Celsius, and is measured by 1,300 weather stations scattered throughout Japan, and the results are aggregated and weighed based on the distance away from the population center of the prefecture [@japan_energy_mortality]. The electricity price is measured in yen per Kwh. The paper does not specify how this was measured. One possibility is they take the revenue generated by each electric company and divide it by the power generated by the company. The heatstroke rate is a number which represents how many ambulances were used due to a heatstroke per 100,000 people. This is divided into age groups as well. It is not mentioned what kind of criteria must be met for an ambulance use to be considered used due to a heatstroke. Electricity saving target rate is a decimal point number which represents what the power companies and the Japanese government aimed to decrease electricity consumption by. This is an arbitrary target set by the Japanese Electricity Supply-Demand Verification Subcommittee in the summer every year [@japan_energy_mortality]. They factor in many variables. It is not documented this arbitrary number was chosen. 
 
 
+```{r}
+#| label: fig-key-variables-plots
+#| fig-cap: Summary of Key Variables for Each Year
+#| fig-width: 8
+#| fig-height: 10
+#| echo: false
+#| warning: false
+#| message: false
+
+cleaned_data$date <- as.Date(paste(cleaned_data$year, cleaned_data$month, "01", sep = "-"))
+
+p1 <- cleaned_data |>
+  ggplot(aes(x = date, y = elec_price)) +
+  theme_classic() +
+  geom_jitter(alpha = 0.2) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  labs(x = "Year", y = "Electricity Price (yen per Kwh)", title = "Panel A. Electricity Price over the Years")
+
+p2 <- cleaned_data |>
+  ggplot(aes(x = date, y = heat_stroke_rate)) +
+  theme_classic() +
+  geom_jitter(alpha = 0.2) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  labs(x = "Year", y = "heatstroke Rate (per 100,000 people)",  title = "Panel B. heatstroke Rate over the Years")
+
+p3 <- cleaned_data |>
+  ggplot(aes(x = date, y = saving_rate)) +
+  theme_classic() +
+  geom_jitter(alpha = 0.2) +
+  geom_segment(x = as.Date("2011-03-11"), y = 0, xend = as.Date("2011-03-11"), yend = 0.2, linetype = "dotted", size = 1) +
+  geom_text(x = as.Date("2011-01-09"), y = 0.10, label = "Fukushima Disaster", nudge_x = -10, size = 5, check_overlap = TRUE, angle = 90)+
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  labs(x = "Year", y = "Electricity Saving Target", title = "Panel C. Electricity Saving Target over the Years")
+
+p4 <- cleaned_data |>
+  ggplot(aes(x = date, y = avg_temp)) +
+  theme_classic() +
+  geom_jitter(alpha = 0.2) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  labs(x = "Year", y = "Average Temperature (Celcius)", title = "Panel D. \n Average Temperature over the Years")
+
+p5 <- cleaned_data |>
+  ggplot(aes(x = date, y = gdp_capita)) +
+  theme_classic() +
+  geom_jitter(alpha = 0.2) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  labs(x = "Year", y = "GDP Per Capita (1000 Yen)", title = "Panel E. GDP Per Capita for Each Power \n Company Area over the Years")
+
+(p1 + p2) / p3 / (p4 + p5)
+```
+
+
+```{r}
+#| label: tbl-key-var-summary
+#| tbl-cap: Summary statistics of key variables 
+#| echo: false
+#| warning: false
+#| message: false
+
+summary_table <- tibble(
+  label = c(
+    "Electricity Saving Target",
+    "heatstroke Rate",
+    "Electricity Price",
+    "Average Temperature",
+    "GDP per Capita"
+  ),
+  maxes = c(
+    max(cleaned_data$saving_rate),
+    max(cleaned_data$heat_stroke_rate),
+    max(cleaned_data$elec_price),
+    max(cleaned_data$avg_temp),
+    max(cleaned_data$gdp_capita)
+  ),
+  means = c(
+    mean(cleaned_data$saving_rate),
+    mean(cleaned_data$heat_stroke_rate),
+    mean(cleaned_data$elec_price),
+    mean(cleaned_data$avg_temp),
+    mean(cleaned_data$gdp_capita)
+  ),
+  medians = c(
+    median(cleaned_data$saving_rate),
+    median(cleaned_data$heat_stroke_rate),
+    median(cleaned_data$elec_price),
+    median(cleaned_data$avg_temp),
+    median(cleaned_data$gdp_capita)
+  ),
+  mins = c(
+    min(cleaned_data$saving_rate),
+    min(cleaned_data$heat_stroke_rate),
+    min(cleaned_data$elec_price),
+    min(cleaned_data$avg_temp),
+    min(cleaned_data$gdp_capita)
+  ),
+  sds = c(
+    sd(cleaned_data$saving_rate),
+    sd(cleaned_data$heat_stroke_rate),
+    sd(cleaned_data$elec_price),
+    sd(cleaned_data$avg_temp),
+    sd(cleaned_data$gdp_capita)
+  ),
+)
+# https://stackoverflow.com/a/71602510
+summary_table <-
+  summary_table %>%
+  mutate(across(where(is.numeric), ~ num(., digits = 3)))
+
+kable(
+  summary_table,
+  col.names = c(
+    "Variables",
+    "Max",
+    "Mean",
+    "Median",
+    "Min",
+    "Standard Deviation"
+  )
+)
+```
+
+
+# Results
+
+
+```{r}
+#| label: fig-age-vs-heatstroke
+#| fig-cap: Temperature and Heatstroke Rate by Age Group
+#| echo: false
+#| warning: false
+#| message: false
+
+cleaned_data |>
+  ggplot(aes(x = avg_temp, y = heat_stroke_rate)) +
+  theme_classic() +
+  geom_point(aes(color = age_group), alpha = 0.2) +
+  scale_color_discrete(labels = c("0 to 19", "20 to 64", "65+"))+
+  labs(x = "Temperature (Celcius)", y = "Heatstroke Rate (per 100,000 people)", color = "Age Group")
+```
+
+We now explore how these variables interact with each other. We start with perhaps the most obvious interaction: the mean temperature and the heatstroke rate. @Fig-age-vs-heatstroke shows a scatter plot demonstrating that as temperature increases, the heatstroke rate increases. An interesting point is how these trends seem to differ significantly between different age groups. Those who are 65 or older have noticeably higher rate of heatstroke at the same temperature.
+
+We can divide the GDP per capita by the electricity prices to compute how affordable the electricity is for a person working and living in that area. It will be a measurement of how much Kwh of energy can be bought with GDP per capita for different areas. @Fig-elec-affordability shows that the prefectures in the center of japan has the most affordable electricity. Not only that, we can also look at how the electricity affordability have changed throughout the years by looking at @fig-elec-affordability-by-year. It can be seen that prior to 2010, electricity was more affordable overall compared to after 2011. 
+
+Now, we can plot the heatstroke rate onto the maps, dividing them by age. 
+
+```{r}
+#| label: fig-elec-affordability
+#| fig-cap: Electricity affordability around regions of Japan 
+#| fig-width: 6
+#| echo: false
+#| warning: false
+#| message: false
+
+# create afforablitiy table
+afford <- cleaned_data |>
+  group_by(year, area_id) |>
+  summarize(
+    elec_afford = gdp_capita / elec_price
+  ) |>
+  distinct() |>
+  ungroup()
+
+# get avg affordability for each area
+avg_afford <- afford |>
+  group_by(area_id) |>
+  summarize(avg_elec_afford = mean(elec_afford))
+
+# get affordability map
+afford_japan_map <- japan_map |>
+  left_join(pref_to_area) |>
+  left_join(avg_afford, by = join_by(areas == area_id))
+
+afford_japan_map |>
+  ggplot() +
+  theme_classic() +
+  geom_sf(aes(fill = avg_elec_afford)) + 
+  coord_sf(xlim = c(127, 145), ylim = c(28, 48)) +
+  scale_fill_gradient(low='white', high='black') +
+  labs(
+    fill = "Electricity Affordability (Kwh)"
+  )
+```
+
+```{r}
+#| label: fig-elec-affordability-by-year
+#| fig-cap: Electricity affordability around regions of Japan from 2008 to 2010 (Left), and 2011 to 2015 (Right)
+#| fig-height: 6
+#| echo: false
+#| warning: false
+#| message: false
+
+# create afforablitiy table
+afford <- cleaned_data |>
+  group_by(year, area_id) |>
+  summarize(
+    elec_afford = gdp_capita / elec_price
+  ) |>
+  distinct() |>
+  ungroup()
+
+# get avg affordability for each area before 2011
+before_avg_afford <- afford |>
+  filter(year < 2011) |>
+  group_by(area_id) |>
+  summarize(avg_elec_afford = mean(elec_afford))
+
+# get avg affordability for each area after 2011
+after_avg_afford <- afford |>
+  filter(year >= 2011) |>
+  group_by(area_id) |>
+  summarize(avg_elec_afford = mean(elec_afford))
+
+# get affordability map
+before_afford_japan_map <- japan_map |>
+  left_join(pref_to_area) |>
+  left_join(before_avg_afford, by = join_by(areas == area_id))
+
+after_afford_japan_map <- japan_map |>
+  left_join(pref_to_area) |>
+  left_join(after_avg_afford, by = join_by(areas == area_id))
+
+before_plot <- before_afford_japan_map |>
+  ggplot() +
+  theme_classic() +
+  geom_sf(aes(fill = avg_elec_afford)) + 
+  coord_sf(xlim = c(127, 145), ylim = c(28, 48)) +
+  scale_fill_gradient(low='white', high='black', limits=c(40, 107)) + # , limits=c(41, 106)
+  labs(
+    fill = "Electricity Affordability (Kwh)"
+  ) + 
+  guides(fill="none") # https://stackoverflow.com/a/35622358
+
+after_plot <- after_afford_japan_map |>
+  ggplot() +
+  theme_classic() +
+  geom_sf(aes(fill = avg_elec_afford)) + 
+  coord_sf(xlim = c(127, 145), ylim = c(28, 48)) +
+  scale_fill_gradient(low='white', high='black', limits=c(40, 107)) + # , limits=c(43, 106)
+  labs(
+    fill = "Electricity Affordability (Kwh)"
+  ) + 
+  theme(legend.position="bottom")
+before_plot + after_plot
+```
 
 
 # Discussion
@@ -63,13 +428,6 @@ Talk way more about it.
 
 ## Weaknesses and next steps
 
-Weaknesses and next steps should also be included.
-
-\newpage
-
-\appendix
-
-# Appendix {-}
 
 
 \newpage

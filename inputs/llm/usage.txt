@@ -65,3 +65,48 @@ plot(japan_prefectures, add = TRUE, col = "gray", border = "black")
 This code will download and load the shapefile data for Japan and its prefectures, and then plot Japan with the prefecture boundaries overlaid.
 
 Make sure you have the sf package installed as well, as it's required for handling spatial data in the rnaturalearth package. If you don't have it installed, you can do so by running install.packages("sf").
+
+LLM: ChatGPT-3.5.
+Date: 15th February 2024
+
+User
+I have a dataset in R with these columns:
+1. year
+2. month
+3. Age group - 3 age groups are here, 0-19, 20-64. 65+.
+4. electricity price
+
+I want to use ggplot to plot the change in electricity price over time, and use different color for each age group. How do I do this?
+ChatGPT
+
+You can achieve this using the ggplot2 package in R. Here's how you can do it:
+
+R
+
+# Load the ggplot2 package
+library(ggplot2)
+
+# Assuming your dataset is named "electricity_data"
+# Check the structure of your data
+str(electricity_data)
+
+# Convert year and month to a Date object
+electricity_data$date <- as.Date(paste(electricity_data$year, electricity_data$month, "01", sep = "-"))
+
+# Plot using ggplot2
+ggplot(electricity_data, aes(x = date, y = electricity_price, color = Age_group)) +
+  geom_line() +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") + # Adjust x-axis labels as needed
+  labs(x = "Year", y = "Electricity Price", color = "Age Group") +
+  ggtitle("Change in Electricity Price Over Time by Age Group")
+
+In this code:
+
+    aes() specifies the aesthetic mappings where x is mapped to date, y is mapped to electricity_price, and color is mapped to Age_group.
+    geom_line() adds a line plot.
+    scale_x_date() sets the breaks and labels for the x-axis.
+    labs() is used to set the axis labels and the legend title.
+    ggtitle() sets the title for the plot.
+
+Make sure to replace "electricity_data" with the actual name of your dataset. This code assumes you have already loaded your data into R and have it stored in a data frame named "electricity_data".
+
