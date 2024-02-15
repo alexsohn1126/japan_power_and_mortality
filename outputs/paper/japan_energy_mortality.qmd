@@ -5,7 +5,7 @@ author:
 thanks: "Code and data are available at: [https://github.com/alexsohn1126/japan_power_and_mortality](https://github.com/alexsohn1126/japan_power_and_mortality). Replication aspects in this paper is available at: [https://doi.org/10.48152/ssrp-zk6r-9k16](https://doi.org/10.48152/ssrp-zk6r-9k16)"
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "We obtained replication data from a paper by Guojun and Takanao, and we tried to find the relationship between the regional GDP and heatstroke rate. Almost no correlation between those two variables were found in the paper. This could be important when researching income inequalities and how that affects one's health. Especially with ever increasing effects of global warming, this study can be useful on policies to set for preventing heatstrokes."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -133,11 +133,11 @@ pref_to_area <- tibble(
 
 # Introduction
 
-Japan is a country located near the edge of eurasia tectonic plates. Numerous earthquakes affect Japan each year. 2011 Tōhoku earthquake was one of the most devastating earthquakes to occur in recorded history. The earthquake was measured at the magnitude X and took over Y number of people's lives [TODO: ADD CITATION HERE]. Not only that, the earthquake was followed by a tsunami, being over Z meters tall and swept over ABC region [TODO: Add actual data here]. The nuclear power plant that was located near the shores of Fukushima prefacture was damaged by the earthquake, followed by the tsunami. The radioactive fuel rods melted and radiation was spread over a wide region near the shores. The International Nuclear Event Scale (INES) intends to measure the seriousness of nuclear accidents. Fukushima nuclear disaster was given INES level 7. Only other nuclear disaster that was given a INES level 7 was the Chernobyl disaster[TODO:ADD CITATION HERE].
+Japan is a country located near the edge of Eurasia tectonic plates. Numerous earthquakes affect Japan each year. 2011 Tōhoku earthquake was one of the most devastating earthquakes to occur in recorded history. The nuclear power plant that was located near the shores of Fukushima prefacture was damaged by the earthquake, followed by the tsunami. The radioactive fuel rods melted and radiation was spread over a wide region near the shores. The International Nuclear Event Scale (INES) intends to measure the seriousness of nuclear accidents. Fukushima nuclear disaster was given INES level 7. Only other nuclear disaster that was given a INES level 7 was the Chernobyl disaster.
 
-Fukushima nuclear disaster instilled fear for nuclear power on the Japanese citizens. The Japanese power companies started shutting down nuclear power plants around the country. This decreased the number of available power throughout the country. A campaign to encourage electricity saving ran over Japan. The campaign was a success, decreasing electricity consumption by X amount [TODO: ADD CITATION]. However Japan has very hot and humid summers which cause heatstrokes especially in elderly populations. Limiting electricity usage by keeping the ACs off could cause higher rate of heatstrokes in vulnerable populations.
+Fukushima nuclear disaster instilled fear for nuclear power on the Japanese citizens. The Japanese power companies started shutting down nuclear power plants around the country. This decreased the number of available power throughout the country. A campaign to encourage electricity saving ran over Japan. However Japan has very hot and humid summers which cause heatstrokes especially in elderly populations. Limiting electricity usage by keeping the ACs off could cause higher rate of heatstrokes in vulnerable populations.
 
-Guojun He and Takanao Tanaka published a study which observed the effects of these energy savings and mortality rates due to heatstrokes [TODO: ADD CITATION HERE]. They have found there were higher number of ambulance calls caused by heatstrokes after the shutdown of nuclear power plants. Also, Higher mortality rates in extreme heat (>30$^\circ$C) was observed after the shutdown. They have dove in depth on how the shift in power generation demographic have possibly affected mortality rates from heatstrokes, but the effect which the cost and the affordability of electricity had was not discussed in detail.
+Guojun He and Takanao Tanaka published a study which observed the effects of these energy savings and mortality rates due to heatstrokes [@japan_energy_mortality]. They have found there were higher number of ambulance calls caused by heatstrokes after the shutdown of nuclear power plants. Also, Higher mortality rates in extreme heat (>30$^\circ$C) was observed after the shutdown. They have dove in depth on how the shift in power generation demographic have possibly affected mortality rates from heatstrokes, but the effect which the cost and the affordability of electricity had was not discussed in detail.
 
 In this paper, I have used the same dataset that was given by Goujun and Takanao to focus on the different age groups of japan, and how they were affected by the change of variables related to electricity affordability. My estimand of interest is to which degree those variables affect the number of heatstroke cases across different age groups in Japan. In this paper, I will first introduce our dataset, going into detail how they were collected by the original authors, and what I have done to clean them if any. Then, I will discuss about the results we have gotten from the data. Lastly, I will discuss what we have found, and their possible implications. I will be reflecting upon our process and discussing potential future researches.
 
@@ -145,9 +145,9 @@ In this paper, I have used the same dataset that was given by Goujun and Takanao
 ## Sources
 The original paper by Goujun and Takanao combines datasets from multiple sources. We will go through where each variable was sourced from.
 
-The electricity saving target dataset from 2008 to 2015 was collected from Japan's Electricity Supply-Demand Verification Subcommittee for every summer season [CITE ORIGINAL PAPER]. The paper defined the summer season as July, August, and September. We will also use the same definition of summer in our paper. 
+The electricity saving target dataset from 2008 to 2015 was collected from Japan's Electricity Supply-Demand Verification Subcommittee for every summer season [@japan_energy_mortality]. The paper defined the summer season as July, August, and September. We will also use the same definition of summer in our paper. 
 
-Our dataset is organized by "areas". Areas are a collection of prefectures (states) in Japan which have the same power companies. There are 10 major power companies within Japan, therefore we divide Japan into 10 areas. This is fine because each power company essentially holds a monopoly over their region [CITE ORIGINAL PAPER]. heatstroke data from 2008 to 2015 was collected by observing the number of ambulance transports caused by a heatstroke. The heatstroke data was then converted into the heatstroke rate per 100,000 people. This data was gathered from the Fire and Disaster Management Agency in Japan [CITE ORIGINAL PAPER]. This data is collected in a monthly basis. The prefectural temperature data was collected by consulting Meteorological Agency of Japan [CITE ORIGINAL PAPER]. This was done by aggregating station level data. Original authors weighed each station data with the inverse square of the distance to the population center of a prefecture. This meant that weather stations closer to the prefecture's population center would be factored in more than the stations further away.
+Our dataset is organized by "areas". Areas are a collection of prefectures (states) in Japan which have the same power companies. There are 10 major power companies within Japan, therefore we divide Japan into 10 areas. This is fine because each power company essentially holds a monopoly over their region [@japan_energy_mortality]. heatstroke data from 2008 to 2015 was collected by observing the number of ambulance transports caused by a heatstroke. The heatstroke data was then converted into the heatstroke rate per 100,000 people. This data was gathered from the Fire and Disaster Management Agency in Japan [@japan_energy_mortality]. This data is collected in a monthly basis. The prefectural temperature data was collected by consulting Meteorological Agency of Japan [@japan_energy_mortality]. This was done by aggregating station level data. Original authors weighed each station data with the inverse square of the distance to the population center of a prefecture. This meant that weather stations closer to the prefecture's population center would be factored in more than the stations further away.
 
 GDP per capita for each area was computed by taking the sum of GDP from all the prefectures in each area, and dividing it by the number of people in the area. Number of people in the area was computed by adding up the number of people in the prefectures within the area.
 
@@ -156,7 +156,7 @@ We downloaded Japan's map divided into prefectures to help us visualize data bet
 We chose this dataset because it is well documented by the original paper authors. It also combines data from numerous sources, making it easier for us to clean up and combine the data into one table. As of our knowledge, there isn't a dataset which has electricity and heatstroke rate of Japan in the same dataset.
 
 ## Methodology {#sec-methodology}
-To combine many datasets into one, we have used Open Source Statistical Programming Language R [@citeR]. Along with it, we have used various R packages to assist us in downloading and processing the data, and generating graphs. These packages are: `tidyverse` [@tidyverse], `rnaturalearth` [@rnaturalearth], `sf` [@sf], `here` [@here], `patchwork` [@patchwork], and `haven` [@haven].
+To combine many datasets into one, we have used Open Source Statistical Programming Language R [@citeR]. Along with it, we have used various R packages to assist us in downloading and processing the data, and generating graphs. These packages are: `tidyverse` [@tidyverse], `rnaturalearth` [@rnaturalearth], `sf` [@sf], `here` [@here], `kableExtra`[@kableExtra], `patchwork` [@patchwork], and `haven` [@haven].
 
 The original paper's authors have used the Stata statistical software. Meaning the data files were given in a `.dta` file format. Using `haven` R package, we were able to load it into R and work with the dataset.
 
@@ -185,21 +185,21 @@ cleaned_data$date <- as.Date(paste(cleaned_data$year, cleaned_data$month, "01", 
 p1 <- cleaned_data |>
   ggplot(aes(x = date, y = elec_price)) +
   theme_classic() +
-  geom_jitter(alpha = 0.2) +
+  geom_jitter(alpha = 0.1) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   labs(x = "Year", y = "Electricity Price (yen per Kwh)", title = "Panel A. Electricity Price over the Years")
 
 p2 <- cleaned_data |>
   ggplot(aes(x = date, y = heat_stroke_rate)) +
   theme_classic() +
-  geom_jitter(alpha = 0.2) +
+  geom_jitter(alpha = 0.1) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   labs(x = "Year", y = "heatstroke Rate (per 100,000 people)",  title = "Panel B. heatstroke Rate over the Years")
 
 p3 <- cleaned_data |>
   ggplot(aes(x = date, y = saving_rate)) +
   theme_classic() +
-  geom_jitter(alpha = 0.2) +
+  geom_jitter(alpha = 0.1) +
   geom_segment(x = as.Date("2011-03-11"), y = 0, xend = as.Date("2011-03-11"), yend = 0.2, linetype = "dotted", size = 1) +
   geom_text(x = as.Date("2011-01-09"), y = 0.10, label = "Fukushima Disaster", nudge_x = -10, size = 5, check_overlap = TRUE, angle = 90)+
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
@@ -208,14 +208,14 @@ p3 <- cleaned_data |>
 p4 <- cleaned_data |>
   ggplot(aes(x = date, y = avg_temp)) +
   theme_classic() +
-  geom_jitter(alpha = 0.2) +
+  geom_jitter(alpha = 0.1) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   labs(x = "Year", y = "Average Temperature (Celcius)", title = "Panel D. \n Average Temperature over the Years")
 
 p5 <- cleaned_data |>
   ggplot(aes(x = date, y = gdp_capita)) +
   theme_classic() +
-  geom_jitter(alpha = 0.2) +
+  geom_jitter(alpha = 0.1) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   labs(x = "Year", y = "GDP Per Capita (1000 Yen)", title = "Panel E. GDP Per Capita for Each Power \n Company Area over the Years")
 
@@ -293,7 +293,7 @@ kable(
 ```
 
 
-# Results
+# Results {sec-results}
 
 
 ```{r}
@@ -313,14 +313,16 @@ cleaned_data |>
 
 We now explore how these variables interact with each other. We start with perhaps the most obvious interaction: the mean temperature and the heatstroke rate. @Fig-age-vs-heatstroke shows a scatter plot demonstrating that as temperature increases, the heatstroke rate increases. An interesting point is how these trends seem to differ significantly between different age groups. Those who are 65 or older have noticeably higher rate of heatstroke at the same temperature.
 
-We can divide the GDP per capita by the electricity prices to compute how affordable the electricity is for a person working and living in that area. It will be a measurement of how much Kwh of energy can be bought with GDP per capita for different areas. @Fig-elec-affordability shows that the prefectures in the center of japan has the most affordable electricity. Not only that, we can also look at how the electricity affordability have changed throughout the years by looking at @fig-elec-affordability-by-year. It can be seen that prior to 2010, electricity was more affordable overall compared to after 2011. 
+@Fig-heatstroke-regions suggests that southern regions of Japan have higher rates of heatstrokes. Because Japan is on the northern hemisphere, the hotter it will be more south you go. Then it would make sense as the temperature is highly correlated with heatstroke rate as we've shown on @fig-age-vs-heatstroke.
 
-Now, we can plot the heatstroke rate onto the maps, dividing them by age. 
+We can divide the GDP per capita by the electricity prices to compute how affordable the electricity is for a person working and living in that area. It will be a measurement of how much Kwh of energy can be bought with GDP per capita for different areas. @Fig-elec-affordability shows that the prefectures in the center of japan has the most affordable electricity. Not only that, we can also look at how the electricity affordability have changed throughout the years by looking at @fig-elec-affordability-by-year. It can be seen that prior to 2010, electricity was more affordable overall compared to after 2011.
+
+Now we investigate whether there's a relationship between the electricity affordability and heatstroke rates. @Fig-heatstroke-vs-elec-afford demonstrates there may be a slight negative correlation between electricity affordability and h heatstroke rates. That is, there may be a trend which heatstroke rate decreases as electricity affordability decreases. There may be very little correlation because the data points are spread out too far. However the group of data points which has the highest electricity affordability also seems to have a very low heatstroke rate. 
+
 
 ```{r}
 #| label: fig-elec-affordability
 #| fig-cap: Electricity affordability around regions of Japan 
-#| fig-width: 6
 #| echo: false
 #| warning: false
 #| message: false
@@ -358,7 +360,6 @@ afford_japan_map |>
 ```{r}
 #| label: fig-elec-affordability-by-year
 #| fig-cap: Electricity affordability around regions of Japan from 2008 to 2010 (Left), and 2011 to 2015 (Right)
-#| fig-height: 6
 #| echo: false
 #| warning: false
 #| message: false
@@ -417,18 +418,84 @@ after_plot <- after_afford_japan_map |>
 before_plot + after_plot
 ```
 
+```{r}
+#| label: fig-heatstroke-regions
+#| fig-cap: Heatstroke rates in japan
+#| echo: false
+#| warning: false
+#| message: false
+
+# get heatstroke  map
+heatstroke_map <- japan_map |>
+  left_join(pref_to_area) |>
+  left_join(cleaned_data |> group_by(area_id) |> summarize(heat_stroke_rate = mean(heat_stroke_rate)), by = join_by(areas == area_id))
+
+map_plot <- heatstroke_map |>
+  ggplot() +
+  theme_classic() +
+  geom_sf(aes(fill = heat_stroke_rate)) + 
+  coord_sf(xlim = c(127, 145), ylim = c(28, 48)) +
+  scale_fill_gradient(low='white', high='black') + # , limits=c(43, 106)
+  labs(
+    fill = "Heatstroke rate\n(per 100,000 people)"
+  )
+map_plot
+```
+
+```{r}
+#| label: fig-heatstroke-vs-elec-afford
+#| fig-cap: Heatstroke rates and electricity affordability in Japan by Age 
+#| echo: false
+#| warning: false
+#| message: false
+
+afford <- cleaned_data |>
+  mutate(
+    elec_afford = gdp_capita / elec_price
+  )
+
+afford |>
+  ggplot() +
+  geom_jitter(
+    aes(
+      x = elec_afford,
+      y = heat_stroke_rate,
+      color = age_group
+    ),
+    alpha = 0.5,
+    width = 0.5
+  ) +
+  scale_color_discrete(labels = c("0 to 19", "20 to 64", "65+"))+
+  theme_classic() +
+  labs(
+    x = "Electricity Affordability",
+    y = "Heatstroke Rate (per 100,000 people)",
+    color = "Age Group"
+  )
+
+```
+
 
 # Discussion
 
-## First discussion point {#sec-first-point}
+## Income and Heatstrokes
 
-## Second discussion point
+As we have shown in the results section, we have not found a clear trend between economic status and heatstroke rates. Our initial hypothesis was that having a lower income or a higher electricity pricing may have disencouraged people from using the AC. Using less AC means higher probability of someone getting a heat stroke. But clearly shown in the figures above, geographic location and the climate of the prefecture was the only correlating variable with heatstroke rates. It also seemed like there was an almost exponential increase in heatstrokes as the mean temperature increased. 
 
-## Third discussion point
+One explanation could be that those prefectures which have lower summer temperature are not as rich as those in warmer climates. We lack the background knowledge behind all of these prefectures, so we are not to say whether we know this is true. But a lot of complex interaction between climate and economy could have occurred, leaving the colder prefectures poorer than others. That means those colder and poorer prefectures would not have to turn the AC on to stay at a comfortable temperature at least during the summer.
+
+## Advances in communication technology
+
+It is no secret that we are connected to each other via the internet than ever. This could be one explanation to why the economic factors did not correlate well with heatstroke rates. We are able to find information about anything in matter of seconds in the modern age. One could look at the weather forecast for the next few days and cancel plans or dress accordingly easier than ever. For example, if there was a large event that was going to happen outside such as a concert and the attendees have seen that it will be scorching hot that day. Then they would be able to dress for hot weather, and bring water bottles and drinks that can keep them hydrated, which is important to avoid heatstrokes.
+
+This explanation may seem weak once we factor in the age. Older populations are much less likely to check the weather forecast on their phones everyday. They may look at the TV weather forecasts once in a while, but the general stereotype is that older people don't tend to know how to use a phone to check the weather forecast. However, we believe that with the power of internet, they are able to stay connected with their family members whom can remind them that a heat wave is coming soon. It would be very challenging to measure the effects of such reminders on heatstrokes. But it would definitely play a factor.
+
 
 ## Weaknesses and next steps
 
+One weakness of this analysis is that it is only looking at a very small number of variables to explain this complex workings behind heatstrokes. While the temperature is the most overwhelming variable, we still believe there may be an economic explanation to the rates of heatstrokes in a prefecture. Perhaps diving down to a lower level, to a town or a city level analysis will allow us to divide up Japan into smaller pieces. This could mean we may find some patterns which we have not found in prefecture level because we were averaging everything out over a large number of population and physical area.
 
+In the future, if we could perform this study on countries that have recently started getting serious heat waves, such as France, it would be interesting. Different cultural, physical aspects will be at play. Because Japan is a mostly racially homogeneous country, it would be interesting to see a country with more racial diversity, and see how different races deal with heat waves and heatstrokes. 
 
 \newpage
 

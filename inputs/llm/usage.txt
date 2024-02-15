@@ -110,3 +110,69 @@ In this code:
 
 Make sure to replace "electricity_data" with the actual name of your dataset. This code assumes you have already loaded your data into R and have it stored in a data frame named "electricity_data".
 
+I have 4 data columns in R,  one for year, one for area id, one for gdp per capita, last one for electricity price. I want to make an affordability column which is gdp divided by electricity cost. I want to group them by year and area id. 
+ChatGPT
+
+You can achieve this using the dplyr package in R. Here's how you can do it:
+
+R
+
+# Install and load the required package
+install.packages("dplyr")
+library(dplyr)
+
+# Assuming your data frame is named df
+# Let's say your columns are named year, area_id, gdp_per_capita, and electricity_price
+
+# Create the affordability column
+df <- df %>%
+  group_by(year, area_id) %>%
+  mutate(affordability = gdp_per_capita / electricity_price)
+
+# View the updated dataframe
+print(df)
+
+This code will group your data by year and area_id, and then calculate the affordability by dividing gdp_per_capita by electricity_price, creating a new column named affordability.
+User
+Now I see all these duplicate rows I don't need. How do I get rid of them?
+ChatGPT
+
+To remove duplicate rows from your dataframe, you can use the distinct() function from the dplyr package. Here's how you can do it:
+
+R
+
+# Assuming your data frame is named df
+
+# Remove duplicate rows
+df <- df %>%
+  distinct()
+
+# View the updated dataframe
+print(df)
+
+This will remove all duplicate rows from your dataframe, keeping only the unique combinations of year, area_id, and other columns.
+User
+I want to get the average of all the datapoints before the year 2010, but seperately for different area id. How do I do that?
+ChatGPT
+
+You can achieve this using the filter() and group_by() functions from the dplyr package to filter the rows before the year 2010 and then calculate the average for each area_id. Here's how you can do it:
+
+R
+
+# Assuming your data frame is named df
+
+# Filter data before the year 2010
+filtered_data <- df %>%
+  filter(year < 2010)
+
+# Calculate average for each area_id
+average_by_area <- filtered_data %>%
+  group_by(area_id) %>%
+  summarize(average_gdp_per_capita = mean(gdp_per_capita),
+            average_electricity_price = mean(electricity_price),
+            average_affordability = mean(affordability, na.rm = TRUE))
+
+# View the average for each area_id
+print(average_by_area)
+
+This code will filter the rows before the year 2010 and then calculate the average of gdp_per_capita, electricity_price, and affordability for each area_id.
