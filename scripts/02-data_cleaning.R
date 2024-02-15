@@ -25,12 +25,12 @@ pref_year <- pref_year |>
   filter(year >= 2008 & year <= 2015)
 # Only take the summer months as that's the main focus of this study
 regions <- regions |>
-  filter(month %in% c(7,8,9)) |>
+  filter(month %in% c(7, 8, 9)) |>
   select(year, month, area_id, pop0_19, pop20_64, pop65, power_usage = total, ptotal) |>
   filter(year >= 2008 & year <= 2015)
 # Also only take summer months
 working <- working |>
-  filter(month %in% c(7,8,9)) |>
+  filter(month %in% c(7, 8, 9)) |>
   select(year, month, area_id, age, saving_rate = saving_rs, stroker, temp) |>
   filter(year >= 2008 & year <= 2015)
 # Delete unnecessary columns from map data
@@ -81,10 +81,10 @@ pref_year <- pref_year |>
 
 # Make a table combining all the replication data
 cleaned_data <- left_join(
-    regions,
-    working,
-    by = join_by(year, month, area_id)
-  ) |>
+  regions,
+  working,
+  by = join_by(year, month, area_id)
+) |>
   left_join(
     pref_year
   )
@@ -92,14 +92,15 @@ cleaned_data <- left_join(
 # Final column name changes
 cleaned_data <- cleaned_data |>
   select(year,
-         month,
-         area_id,
-         age_group = age,
-         saving_rate,
-         heat_stroke_rate = stroker,
-         elec_price = ptotal,
-         avg_temp = temp,
-         gdp_capita = area_gdp_capita)
+    month,
+    area_id,
+    age_group = age,
+    saving_rate,
+    heat_stroke_rate = stroker,
+    elec_price = ptotal,
+    avg_temp = temp,
+    gdp_capita = area_gdp_capita
+  )
 
 #### Save data ####
 write_csv(cleaned_data, "outputs/data/cleaned_data.csv")

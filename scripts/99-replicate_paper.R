@@ -24,38 +24,46 @@ nuclear_graph_data <- nuclear |>
   ) |>
   mutate(
     # Mark dates before the Fukushima Incident
-    before_incident = if_else(as.Date(paste(year, "12-01", sep="-")) < as.Date("2011-03-11"), "Before", "After")
+    before_incident = if_else(as.Date(paste(year, "12-01", sep = "-")) < as.Date("2011-03-11"), "Before", "After")
   )
-nuclear_graph_data|>
-  ggplot(aes(x=year, y=utilization)) +
-  geom_line(color="gray",
-            size=1) +
-  geom_point(aes(color=before_incident,
-                 shape=before_incident),
-             size = 5) +
-  geom_vline(xintercept = 2010.5,
-             color= "#808080",
-             linetype = "dashed",
-             size = 1) +
+nuclear_graph_data |>
+  ggplot(aes(x = year, y = utilization)) +
+  geom_line(
+    color = "gray",
+    size = 1
+  ) +
+  geom_point(
+    aes(
+      color = before_incident,
+      shape = before_incident
+    ),
+    size = 5
+  ) +
+  geom_vline(
+    xintercept = 2010.5,
+    color = "#808080",
+    linetype = "dashed",
+    size = 1
+  ) +
   theme_classic() +
-  scale_x_continuous(breaks = seq(2008, 2015, by=1)) +
+  scale_x_continuous(breaks = seq(2008, 2015, by = 1)) +
   labs(
-    x= "Year",
+    x = "Year",
     y = "Nuclear Power Utilization",
     title = "Nuclear Power Plant Utilization Before and After the Fukushima Disaster",
     color = "Before or After the Fukushima Incident",
     shape = "Before or After the Fukushima Incident"
-  ) + 
-  theme(legend.position = 'bottom')
+  ) +
+  theme(legend.position = "bottom")
 
 #### Load Electricity Usage and Cost Data ####
 ec_usage_cost <- tibble(read_dta("inputs/data/elec_region.dta"))
 
 #### Replicate Electricity Usage and Cost Graph ####
 ec_graph_data <- ec_usage_cost |>
-  filter(month %in% c(12,1,2,3,7,8,9)) |>
+  filter(month %in% c(12, 1, 2, 3, 7, 8, 9)) |>
   mutate(
-    season = if_else(month %in% c(12,1,2,3), "Winter", "Summer")
+    season = if_else(month %in% c(12, 1, 2, 3), "Winter", "Summer")
   ) |>
   group_by(year, season) |>
   summarize(
@@ -67,28 +75,30 @@ ec_graph_data <- ec_usage_cost |>
 # Get 2010 winter averages
 winter_2010_avg_ec_usage <- ec_graph_data |>
   filter(year == 2010 & season == "Winter") |>
-  pull('avg_usage')
+  pull("avg_usage")
 winter_2010_avg_ec_cost <- ec_graph_data |>
   filter(year == 2010 & season == "Winter") |>
-  pull('avg_cost')
+  pull("avg_cost")
 
 # Get 2010 Summer averages
 summer_2010_avg_ec_usage <- ec_graph_data |>
   filter(year == 2010 & season == "Summer") |>
-  pull('avg_usage')
+  pull("avg_usage")
 summer_2010_avg_ec_cost <- ec_graph_data |>
   filter(year == 2010 & season == "Summer") |>
-  pull('avg_cost')
+  pull("avg_cost")
 
 # Make a new row with all the ratios
 ec_graph_data <- ec_graph_data |>
   mutate(
     cost_ratio = if_else(season == "Summer",
-                         avg_cost / summer_2010_avg_ec_cost,
-                         avg_cost / winter_2010_avg_ec_cost),
+      avg_cost / summer_2010_avg_ec_cost,
+      avg_cost / winter_2010_avg_ec_cost
+    ),
     usage_ratio = if_else(season == "Summer",
-                         avg_usage / summer_2010_avg_ec_usage,
-                         avg_usage / winter_2010_avg_ec_usage)
+      avg_usage / summer_2010_avg_ec_usage,
+      avg_usage / winter_2010_avg_ec_usage
+    )
   )
 
 # Make 2 vectors with average of those 2 seasons
@@ -98,7 +108,7 @@ yearly_avg_usage <- c()
 yearly_avg_cost <- c()
 
 # For each year get the average usage and average cost and add to the vector
-for (y in 2004:2015){
+for (y in 2004:2015) {
   curr_avg_usage <- ec_graph_data |>
     filter(year == y) |>
     pull(usage_ratio)
@@ -130,21 +140,25 @@ final_ec_graph_data <- ec_graph_data |>
   filter(!((dataType == "yearly_cost" | dataType == "yearly_usage") & season == "Winter")) |>
   # Add season to datatype so we can separate it when we graph
   mutate(
-    dataType = paste(season, dataType, sep="-")
+    dataType = paste(season, dataType, sep = "-")
   )
 
 final_ec_graph_data |>
   ggplot(aes(x = year)) +
   theme_classic() +
-  scale_x_continuous(breaks = seq(2004, 2015, by=1)) +
-  scale_linetype_manual(values=c("twodash", "dotted", "twodash", "dotted", "twodash", "dotted"),
-                        labels=c('Summer Cost', 'Summer Usage', 'Year Cost', 'Year Usage', 'Winter Cost', 'Winter Usage')) +
-  scale_shape_manual(values=c(17, 16, 15, 18, 17, 16),
-                     labels=c('Summer Cost', 'Summer Usage', 'Year Cost', 'Year Usage', 'Winter Cost', 'Winter Usage')) +
+  scale_x_continuous(breaks = seq(2004, 2015, by = 1)) +
+  scale_linetype_manual(
+    values = c("twodash", "dotted", "twodash", "dotted", "twodash", "dotted"),
+    labels = c("Summer Cost", "Summer Usage", "Year Cost", "Year Usage", "Winter Cost", "Winter Usage")
+  ) +
+  scale_shape_manual(
+    values = c(17, 16, 15, 18, 17, 16),
+    labels = c("Summer Cost", "Summer Usage", "Year Cost", "Year Usage", "Winter Cost", "Winter Usage")
+  ) +
   scale_color_manual(
-    values=c('red','red', 'darkgray', 'darkgray','blue','blue'),
-    labels=c('Summer Cost', 'Summer Usage', 'Year Cost', 'Year Usage', 'Winter Cost', 'Winter Usage')
-    ) +
+    values = c("red", "red", "darkgray", "darkgray", "blue", "blue"),
+    labels = c("Summer Cost", "Summer Usage", "Year Cost", "Year Usage", "Winter Cost", "Winter Usage")
+  ) +
   geom_line(
     aes(
       y = values,
@@ -171,8 +185,8 @@ final_ec_graph_data |>
   )
 
 #### Load in Saving Target and Consumption data ####
-saving_target <- tibble(read_dta('inputs/data/saving_r.dta'))
-consumption <- tibble(read_dta('inputs/data/elec_region.dta'))
+saving_target <- tibble(read_dta("inputs/data/saving_r.dta"))
+consumption <- tibble(read_dta("inputs/data/elec_region.dta"))
 
 #### Replicate Graph ####
 # Organize saving target By year and area code
@@ -187,9 +201,9 @@ region_yearly_st <- saving_target |>
 
 # Get total energy consumption by season and year and id
 season_yearly_cons <- consumption |>
-  filter(month %in% c(1,2,3, 7,8,9, 12)) |>
+  filter(month %in% c(1, 2, 3, 7, 8, 9, 12)) |>
   mutate(
-    season = if_else(month %in% c(1,2,3,12), "Winter", "Summer")
+    season = if_else(month %in% c(1, 2, 3, 12), "Winter", "Summer")
   ) |>
   group_by(season, year, area_id) |>
   summarize(
@@ -212,15 +226,15 @@ summer_2010_cons <- season_yearly_cons |>
 # Get % change for each year and area id
 perc_change <- season_yearly_cons |>
   mutate(
-    change = 
+    change =
       if_else(
         season == "Winter",
-        # Use the fact that winter_2010_cons[area_id] gives us 2010 consumption 
+        # Use the fact that winter_2010_cons[area_id] gives us 2010 consumption
         total / winter_2010_cons[area_id] - 1,
         total / summer_2010_cons[area_id] - 1
       )
   ) |>
-  # Only using data past 2010 
+  # Only using data past 2010
   filter(year > 2010) |>
   mutate(
     id = paste(year, area_id, sep = "-"),
@@ -230,7 +244,7 @@ perc_change <- season_yearly_cons |>
     id,
     change
   )
-  
+
 # Merge 2 tibbles
 merged_table <- left_join(
   perc_change,
@@ -251,7 +265,7 @@ merged_table |>
   ) +
   geom_point(
     aes(
-      x = st, 
+      x = st,
       y = change,
       color = season,
       shape = season
@@ -262,7 +276,7 @@ merged_table |>
     aes(
       group = season,
       color = season
-    ), 
+    ),
     method = "lm",
     se = FALSE,
     linetype = "dashed"

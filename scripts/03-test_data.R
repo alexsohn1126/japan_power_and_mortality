@@ -41,4 +41,4 @@ curr_data$elec_price |> is.numeric()
 all((curr_data$elec_price |> min()) >= 0)
 
 curr_data$gdp_capita |> is.numeric()
-all((curr_data$gdp_capita |> min()) >= 0) 
+all((curr_data$gdp_capita |> min()) >= 0)

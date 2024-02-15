@@ -11,17 +11,17 @@
 library(tidyverse)
 
 #### Simulate data ####
-num_years = 8
-start_year = 2008
-end_year = start_year + num_years - 1
-num_area = 10
-# For each year, 3 months 
+num_years <- 8
+start_year <- 2008
+end_year <- start_year + num_years - 1
+num_area <- 10
+# For each year, 3 months
 # for each month, 10 areas (num_area)
 # for each area, 3 age groups
 # 720 rows total
 
 curr_data <- tibble(
-  year = rep(start_year:end_year, each= 3 * 3, times = num_area),
+  year = rep(start_year:end_year, each = 3 * 3, times = num_area),
   # 3 months for summer: July, Aug, Sep
   month = rep(7:9, 3 * num_years * num_area),
   area_id = rep(1:num_area, each = 3 * 3 * num_years),
@@ -62,11 +62,4 @@ curr_data$elec_price |> is.numeric()
 all((curr_data$elec_price |> min()) >= 0)
 
 curr_data$gdp_capita |> is.numeric()
-all((curr_data$gdp_capita |> min()) >= 0) 
-
-
-
-
-
-
-
+all((curr_data$gdp_capita |> min()) >= 0)
